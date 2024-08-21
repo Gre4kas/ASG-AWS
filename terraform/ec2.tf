@@ -1,14 +1,14 @@
 # Создание Launch Template для EC2 инстансов
 resource "aws_launch_template" "app" {
   name          = "app-launch-template"
-  image_id      = "ami-0c55b159cbfafe1f0" # Пример AMI для Amazon Linux 2
+  image_id      = "ami-066784287e358dad1" 
   instance_type = "t2.micro"
 
   iam_instance_profile {
     name = aws_iam_instance_profile.ec2_instance_profile.name
   }
 
-  vpc_security_group_ids = [aws_security_group.ec2_sg.name]
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
   user_data = base64encode(<<-EOF
                 #!/bin/bash
@@ -35,12 +35,13 @@ resource "aws_autoscaling_group" "app_asg" {
     version = "$Latest"
   }
 
-  min_size             = 1
-  max_size             = 3
-  desired_capacity     = 1
-  vpc_zone_identifier  = module.vpc.public_subnets  # Размещение в публичных подсетях
+  min_size            = 1
+  max_size            = 3
+  desired_capacity    = 1
+  vpc_zone_identifier = module.vpc.public_subnets # Размещение в публичных подсетях
 
   target_group_arns = [aws_lb_target_group.app_tg.arn] # Опционально, если используется Load Balancer
+  health_check_type = "ELB"
 
   tag {
     key                 = "Name"
