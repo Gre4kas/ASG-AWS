@@ -8,7 +8,7 @@ resource "aws_launch_template" "app" {
     name = aws_iam_instance_profile.ec2_instance_profile.name
   }
 
-  security_group_names = [aws_security_group.ec2_sg.name]
+  vpc_security_group_ids = [aws_security_group.ec2_sg.name]
 
   user_data = base64encode(<<-EOF
                 #!/bin/bash
