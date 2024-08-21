@@ -13,6 +13,7 @@ resource "aws_db_instance" "postgres" {
   storage_encrypted      = true
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   db_subnet_group_name   = aws_db_subnet_group.main.name
+  copy_tags_to_snapshot     = true
 
   tags = {
     Name = "my-postgres-db"
