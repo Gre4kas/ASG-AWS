@@ -1,7 +1,7 @@
 # Создание Launch Template для EC2 инстансов
 resource "aws_launch_template" "app" {
   name          = "app-launch-template"
-  image_id      = "ami-066784287e358dad1" 
+  image_id      = "ami-04a81a99f5ec58529" 
   instance_type = "t2.micro"
 
   iam_instance_profile {
@@ -10,21 +10,16 @@ resource "aws_launch_template" "app" {
 
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
-  user_data = base64encode(<<-EOF
-                #!/bin/bash
-                sudo yum update -y
-                sudo yum install -y httpd
-                sudo systemctl start httpd
-                sudo systemctl enable httpd
-                echo "<h1>Welcome to the web server!</h1>" > /var/www/html/index.html
-                EOF
-              )
-
+  user_data = filebase64("${path.module}/nginx.sh")
   tag_specifications {
     resource_type = "instance"
     tags = {
       Name = "app-instance"
     }
+  }
+  # Required with an autoscaling group.
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -50,3 +45,8 @@ resource "aws_autoscaling_group" "app_asg" {
   }
 }
 
+# Create a new ALB Target Group attachment
+resource "aws_autoscaling_attachment" "example" {
+  autoscaling_group_name = aws_autoscaling_group.app_asg.id
+  lb_target_group_arn    = aws_lb_target_group.app_tg.id
+}

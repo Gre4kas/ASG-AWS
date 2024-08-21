@@ -18,12 +18,12 @@ resource "aws_lb_target_group" "app_tg" {
 
   health_check {
     path                = "/"
-    port                = "80"
     protocol            = "HTTP"
-    unhealthy_threshold = 2
-    healthy_threshold   = 5
-    timeout             = 5
+    port                = "80"
     interval            = 30
+    timeout             = 5
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
   }
 }
 
