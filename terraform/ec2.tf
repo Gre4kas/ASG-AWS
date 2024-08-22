@@ -7,6 +7,9 @@ resource "aws_launch_template" "app" {
   iam_instance_profile {
     name = aws_iam_instance_profile.ec2_instance_profile.name
   }
+  monitoring {
+    enabled = true
+  }
 
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
@@ -33,9 +36,8 @@ resource "aws_autoscaling_group" "app_asg" {
   min_size            = 1
   max_size            = 3
   desired_capacity    = 1
-  vpc_zone_identifier = module.vpc.public_subnets # Размещение в публичных подсетях
-
-  target_group_arns = [aws_lb_target_group.app_tg.arn] # Опционально, если используется Load Balancer
+  vpc_zone_identifier = module.vpc.public_subnets
+  target_group_arns = [aws_lb_target_group.app_tg.arn]
   health_check_type = "ELB"
 
   tag {
@@ -46,7 +48,7 @@ resource "aws_autoscaling_group" "app_asg" {
 }
 
 # Create a new ALB Target Group attachment
-resource "aws_autoscaling_attachment" "example" {
+resource "aws_autoscaling_attachment" "app_lb" {
   autoscaling_group_name = aws_autoscaling_group.app_asg.id
   lb_target_group_arn    = aws_lb_target_group.app_tg.id
 }
