@@ -3,7 +3,7 @@ resource "aws_lb" "app_lb" {
   name               = "app-lb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.lb_sg.id]
+  security_groups    = [aws_security_group.lb_sg.id, aws_security_group.ec2_sg.id]
   subnets            = module.vpc.public_subnets
 
   enable_deletion_protection = false

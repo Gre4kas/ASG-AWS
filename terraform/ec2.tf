@@ -11,8 +11,10 @@ resource "aws_launch_template" "app" {
     enabled = true
   }
 
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
-
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups             = [aws_security_group.ec2_sg.id] 
+  }
   user_data = filebase64("${path.module}/nginx.sh")
   tag_specifications {
     resource_type = "instance"
@@ -45,10 +47,4 @@ resource "aws_autoscaling_group" "app_asg" {
     value               = "app-instance"
     propagate_at_launch = true
   }
-}
-
-# Create a new ALB Target Group attachment
-resource "aws_autoscaling_attachment" "app_lb" {
-  autoscaling_group_name = aws_autoscaling_group.app_asg.id
-  lb_target_group_arn    = aws_lb_target_group.app_tg.id
 }

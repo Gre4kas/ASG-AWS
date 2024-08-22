@@ -30,7 +30,6 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ec2" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_http_ec2" {
   security_group_id = aws_security_group.ec2_sg.id
-  referenced_security_group_id = aws_security_group.lb_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
   to_port           = 80
