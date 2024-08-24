@@ -8,10 +8,6 @@ resource "aws_launch_template" "app" {
   update_default_version = true
   user_data = filebase64("${path.module}/nginx.sh")
   vpc_security_group_ids = [ aws_security_group.asg_sg.id ]
-  # network_interfaces {
-  #   associate_public_ip_address = false
-  #   security_groups             = [aws_security_group.asg_sg.id] 
-  # }
 
   monitoring {
     enabled = true
@@ -34,7 +30,7 @@ resource "aws_autoscaling_group" "app_asg" {
   min_size            = 1
   max_size            = 3
   desired_capacity    = 1
-  vpc_zone_identifier = module.vpc.public_subnets
+  vpc_zone_identifier = module.vpc.private_subnets
   target_group_arns = [aws_lb_target_group.app_tg.arn]
   health_check_type = "ELB"
 
