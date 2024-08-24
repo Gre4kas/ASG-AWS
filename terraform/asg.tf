@@ -1,22 +1,22 @@
 # Создание Launch Template для EC2 инстансов
 resource "aws_launch_template" "app" {
-  name          = "app-launch-template"
-  description = "App Launch Template"
-  image_id      = "ami-04a81a99f5ec58529" 
+  name          = "${var.prefix}-app-launch-template"
+  description   = "App Launch Template"
+  image_id      = var.ami
   instance_type = "t2.micro"
 
   update_default_version = true
-  user_data = filebase64("${path.module}/nginx.sh")
-  vpc_security_group_ids = [ aws_security_group.asg_sg.id ]
+  user_data              = filebase64("${path.module}/${var.user_data_file}")
+  vpc_security_group_ids = [aws_security_group.asg_sg.id]
 
   monitoring {
     enabled = true
   }
-  
+
   tag_specifications {
     resource_type = "instance"
     tags = {
-      Name = "app-instance"
+      Name = "${var.prefix}-app-instance"
     }
   }
   # Required with an autoscaling group.
@@ -31,8 +31,8 @@ resource "aws_autoscaling_group" "app_asg" {
   max_size            = 3
   desired_capacity    = 1
   vpc_zone_identifier = module.vpc.private_subnets
-  target_group_arns = [aws_lb_target_group.app_tg.arn]
-  health_check_type = "ELB"
+  target_group_arns   = [aws_lb_target_group.app_tg.arn]
+  health_check_type   = "ELB"
 
   launch_template {
     id      = aws_launch_template.app.id
@@ -41,7 +41,7 @@ resource "aws_autoscaling_group" "app_asg" {
 
   tag {
     key                 = "Name"
-    value               = "app-instance"
+    value               = "${var.prefix}-app-instance"
     propagate_at_launch = true
   }
 }
