@@ -7,10 +7,10 @@ resource "aws_launch_template" "app" {
 
   update_default_version = true
   user_data = filebase64("${path.module}/nginx.sh")
-  vpc_security_group_ids = [ aws_security_group.ec2_sg.id ]
+  vpc_security_group_ids = [ aws_security_group.asg_sg.id ]
   # network_interfaces {
   #   associate_public_ip_address = false
-  #   security_groups             = [aws_security_group.ec2_sg.id] 
+  #   security_groups             = [aws_security_group.asg_sg.id] 
   # }
 
   monitoring {

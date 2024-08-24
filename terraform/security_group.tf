@@ -1,7 +1,7 @@
 # Security Group для EC2
-resource "aws_security_group" "ec2_sg" {
-  name        = "ec2_sg"
-  description = "Security Group for EC2"
+resource "aws_security_group" "asg_sg" {
+  name        = "asg_sg"
+  description = "Security Group for ASG"
   vpc_id      = module.vpc.vpc_id
 
   tags = {
@@ -10,24 +10,24 @@ resource "aws_security_group" "ec2_sg" {
 }
 
 
-resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ec2" {
-  security_group_id = aws_security_group.ec2_sg.id
+resource "aws_vpc_security_group_ingress_rule" "allow_ssh_asg" {
+  security_group_id = aws_security_group.asg_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 22
   to_port           = 22
   ip_protocol       = "tcp"
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_http_ec2" {
-  security_group_id = aws_security_group.ec2_sg.id
+resource "aws_vpc_security_group_ingress_rule" "allow_http_asg" {
+  security_group_id = aws_security_group.asg_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
   to_port           = 80
   ip_protocol       = "tcp"
 }
 
-resource "aws_vpc_security_group_egress_rule" "allow_all_egress" {
-  security_group_id = aws_security_group.ec2_sg.id
+resource "aws_vpc_security_group_egress_rule" "allow_all_egress_asg" {
+  security_group_id = aws_security_group.asg_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
 }
@@ -44,7 +44,7 @@ resource "aws_security_group" "rds_sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_postgres" {
   security_group_id            = aws_security_group.rds_sg.id
-  referenced_security_group_id = aws_security_group.ec2_sg.id
+  referenced_security_group_id = aws_security_group.asg_sg.id
   from_port                    = 5432
   to_port                      = 5432
   ip_protocol                  = "tcp"
