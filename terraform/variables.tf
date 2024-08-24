@@ -62,3 +62,8 @@ variable "private_subnets" {
   default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
+variable "database_subnets" {
+  description = "A list of CIDR blocks for database subnets within the VPC."
+  type        = list(string)
+  default     = ["10.0.21.0/24", "10.0.22.0/24"]
+}
