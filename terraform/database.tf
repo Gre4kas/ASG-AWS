@@ -16,7 +16,7 @@ resource "aws_db_instance" "postgres" {
   copy_tags_to_snapshot        = true
   multi_az                     = true
   performance_insights_enabled = true
-  
+
   tags = {
     Name = "my-postgres-db"
   }
@@ -25,7 +25,7 @@ resource "aws_db_instance" "postgres" {
 # Создание DB Subnet Group для RDS
 resource "aws_db_subnet_group" "main" {
   name       = "main-subnet-group"
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids = module.vpc.database_subnets
   tags = {
     Name = "main-db-subnet-group"
   }
