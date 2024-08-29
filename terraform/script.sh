@@ -38,3 +38,4 @@ sudo systemctl enable docker
 # Verify Docker is installed and working
 #sudo systemctl status docker
 systemctl is-active --quiet docker && echo Docker is running
+

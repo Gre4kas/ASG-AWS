@@ -7,16 +7,20 @@ resource "aws_db_instance" "postgres" {
   instance_class               = "db.t3.micro"
   username                     = "foo"
   password                     = "foobarbaz"
-  parameter_group_name         = "default.postgres16"
   skip_final_snapshot          = true
+  backup_retention_period      = 1
   publicly_accessible          = false # for prod need false
-  storage_encrypted            = true
+  storage_encrypted            = false
   vpc_security_group_ids       = [aws_security_group.rds_sg.id]
   db_subnet_group_name         = aws_db_subnet_group.main.name
   copy_tags_to_snapshot        = true
-  multi_az                     = true
-  performance_insights_enabled = true
+  multi_az                     = false
+  performance_insights_enabled = false
 
+  monitoring_interval          = 0
+
+  deletion_protection          = false
+  
   tags = {
     Name = "my-postgres-db"
   }
