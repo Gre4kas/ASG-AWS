@@ -67,3 +67,18 @@ variable "database_subnets" {
   type        = list(string)
   default     = ["10.0.21.0/24", "10.0.22.0/24"]
 }
+
+# Database
+
+variable "db_instance_class" {
+  default = "db.t3.micro"
+}
+variable "DBName"{
+    default = "ASG-Database"
+}
+variable "DBPassword"{
+    default = "12345678"
+}
+variable "DBUser"{
+    default = "root"
+}

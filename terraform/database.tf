@@ -1,12 +1,12 @@
 # Создание RDS PostgreSQL
 resource "aws_db_instance" "postgres" {
   allocated_storage            = 10
-  db_name                      = "mydatabase"
+  db_name                      = var.DBName
   engine                       = "postgres"
   engine_version               = "16.4"
-  instance_class               = "db.t3.micro"
-  username                     = "foo"
-  password                     = "foobarbaz"
+  instance_class               = var.db_instance_class
+  username                     = var.DBUser
+  password                     = var.DBPassword
   skip_final_snapshot          = true
   backup_retention_period      = 1
   publicly_accessible          = false # for prod need false
