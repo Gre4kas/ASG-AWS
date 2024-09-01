@@ -6,7 +6,7 @@ resource "aws_launch_template" "app" {
   instance_type = "t2.micro"
 
   update_default_version = true
-  user_data              = filebase64("${path.module}/${var.user_data_file}")
+  user_data = base64encode(templatefile("${path.module}/script.sh", local.vars))
   vpc_security_group_ids = [aws_security_group.asg_sg.id]
 
   monitoring {

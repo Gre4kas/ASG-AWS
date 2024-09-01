@@ -26,11 +26,11 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 docker --version
 
 # Add current user to the docker group to run Docker commands without sudo
-sudo usermod -aG docker ${USER}
+sudo usermod -aG docker $USER
 
 
 # Activate the changes to groups
-su - ${USER}
+su - $USER
 
 # Enable Docker
 sudo systemctl enable docker
@@ -39,3 +39,4 @@ sudo systemctl enable docker
 #sudo systemctl status docker
 systemctl is-active --quiet docker && echo Docker is running
 
+docker run -d -p 80:5000 -e HELLO_WORLD="${HELLO_WORLD}" da1ly/appflask:0.1.0

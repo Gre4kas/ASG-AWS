@@ -1,6 +1,6 @@
 services:
   web:
-    build: ./app
+    build: .
     ports:
       - "${WEB_PORT}:${WEB_PORT}"
     environment:
