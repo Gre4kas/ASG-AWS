@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .
+    ports:
+      - "${WEB_PORT}:${WEB_PORT}"
+    environment:
+      - HELLO_WORLD=${HELLO_WORLD}
+    env_file:
+      - .env
