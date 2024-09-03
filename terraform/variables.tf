@@ -68,17 +68,19 @@ variable "database_subnets" {
   default     = ["10.0.21.0/24", "10.0.22.0/24"]
 }
 
-# Database
+############
+# Database #
+############
 
 variable "db_instance_class" {
   default = "db.t3.micro"
 }
-variable "DBName"{
-    default = "ASG-Database"
+variable "DBName" {
+  default = "ASGDatabase"
 }
-variable "DBPassword"{
-    default = "12345678"
+variable "DBPassword" {
+  default = "12345678"
 }
-variable "DBUser"{
-    default = "root"
+variable "DBUser" {
+  default = "root"
 }

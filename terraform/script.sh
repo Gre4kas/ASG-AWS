@@ -39,4 +39,12 @@ sudo systemctl enable docker
 #sudo systemctl status docker
 systemctl is-active --quiet docker && echo Docker is running
 
-docker run -d -p 80:5000 -e HELLO_WORLD="${HELLO_WORLD}" da1ly/appflask:0.1.0
+# Passing variables to a container
+docker run -d -p 80:5000 \
+  -e DB_HOST="${rdsendpoint}" \
+  -e DB_NAME="${DBName}" \
+  -e DB_PASSWORD="${DBPassword}" \
+  -e DB_USER="${DBUser}" \
+  -e HELLO_WORLD="${HELLO_WORLD}" \
+  da1ly/appflask:0.2.0
+
